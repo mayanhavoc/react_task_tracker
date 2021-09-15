@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Products from './components/Products';
 import AddProduct from './components/AddProduct';
-import Footer from './components/Footer';
+import About from './components/About';
 
 
 function App() {
@@ -82,16 +85,23 @@ function App() {
     // const newProduct = { id, ...product }
     // setProducts([...products, newProduct])
   } 
-
+  
   return (
-    <div className="container">
-      <Header 
-        title={'Quotation builder'} 
-        onAdd={() => setShowAddProduct(!showAddProduct)} showAdd={showAddProduct}/>
-      {showAddProduct && <AddProduct onAdd={addProduct}/>}
-      {products.length > 0 ? <Products products={products} onDelete={deleteProduct} onToggle={toggleSelected}/> : 'No products to show'}
-      <Footer/>
-    </div>
+    <Router>
+      <div className="container">
+        <Header 
+          title={'Quotation builder'} 
+          onAdd={() => setShowAddProduct(!showAddProduct)} showAdd={showAddProduct}/>
+        <Route path='/' exact render={(props)=> (
+          <>
+            {showAddProduct && <AddProduct onAdd={addProduct}/>}
+            {products.length > 0 ? <Products products={products} onDelete={deleteProduct} onToggle={toggleSelected}/> : 'No products to show'}
+          </>
+        )}></Route>
+        <Route path='/about' component={About} />
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
