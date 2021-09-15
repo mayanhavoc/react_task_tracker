@@ -1,0 +1,27 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "text": "Static site",
+      "price": 500,
+      "description": "A static web page is a web page that is delivered to the user's web browser exactly as stored. Consequently, a static web page displays the same information for all users, from all contexts.",
+      "source": "https://en.wikipedia.org/wiki/Static_web_page",
+      "selected": false
+    },
+    {
+      "id": 2,
+      "text": "UI Design",
+      "price": 500,
+      "description": "UI or User Interface Design is to design user interfaces with a focus on maximizing usability and the user experience. The goal being making the user's interaction as simple and efficient as possible, or what is known as user-centered design.",
+      "source": "https://en.wikipedia.org/wiki/User_interface_design",
+      "selected": true
+    },
+    {
+      "text": "Dynamic website",
+      "price": "1500",
+      "description": "Dynamic website",
+      "selected": false,
+      "id": 3
+    }
+  ]
+}

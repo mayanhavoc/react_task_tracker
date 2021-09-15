@@ -1,10 +1,10 @@
 import { FaTimes } from 'react-icons/fa'
 
-const Product = ({ product }) => {
+const Product = ({ product, onDelete, onToggle }) => {
     return (
-        <div className='product'>
+        <div className={`product ${product.selected ? 'selected' : '' }`} onDoubleClick={() => onToggle(product.id)}>
             <div className="mb-3">
-                <h3>{product.text} <FaTimes style={{ color: 'red', cursor: 'pointer' }}/></h3>
+                <h3>{product.text} <FaTimes style={{ color: 'red', cursor: 'pointer' }} onClick = {() => onDelete(product.id)}/></h3>
             </div>
             <div className="mb-3">
                 <p>{product.description}

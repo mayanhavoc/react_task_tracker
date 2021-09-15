@@ -1,38 +1,96 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header';
 import Products from './components/Products';
+import AddProduct from './components/AddProduct';
+import Footer from './components/Footer';
 
 
 function App() {
-  const [products, setProducts] = useState(
-    [
-        {
-            id: 1, 
-            text: 'Static site',
-            price: 500,
-            description: 'A static web page (sometimes called a flat page or a stationary page) is a web page that is delivered to the user\'s web browser exactly as stored. Consequently, a static web page displays the same information for all users, from all contexts. ',
-            source: 'https://en.wikipedia.org/wiki/Static_web_page',
-        },
-        {
-            id: 2, 
-            text: 'UI Design',
-            price: 500,
-            description: 'UI or User Interface Design is to design user interfaces with a focus on maximizing usability and the user experience. The goal being making the user\'s interaction as simple and efficient as possible, or what is known as user-centered design. ',
-            source: 'https://en.wikipedia.org/wiki/User_interface_design',
-        },
-        {
-            id: 3, 
-            text: 'Dynamic site',
-            price: 1500,
-            description: 'Dynamic basically means "interactive", they provide a "live" experience for the user. This means that the content (text, images, videos, form fields, etc) can change in response to the user\'s input (think ordering a pizza online vs dialing the phone on the contact section of the website). ',
-            source: 'https://en.wikipedia.org/wiki/Dynamic_web_page',
-        },
-    ])
+  const [showAddProduct, setShowAddProduct] = useState(false)
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const productsFromServer = await fetchProducts()
+      setProducts(productsFromServer)
+    }
+    getProducts()
+  }, [])
+
+  // Fetch products
+  const fetchProducts = async () => {
+    const res = await fetch('http://localhost:5000/products')
+    const data = await res.json()
+
+    return data
+  }
+  
+  // Fetch product
+  const fetchProduct = async (id) => {
+    const res = await fetch(`http://localhost:5000/products/${id}`)
+    const data = await res.json()
+
+    return data
+  }
+
+  // Delete product
+  const deleteProduct = async (id) => {
+    await fetch(`http://localhost:5000/products/${id}`, {
+      method: 'DELETE'
+    })
+    setProducts(products.filter((product) => product.id !== id))
+  }
+
+  // Toggle product selection
+  const toggleSelected = async (id) => {
+    const productToggle = await fetchProduct(id)
+    const updateProduct = {...productToggle, selected: !productToggle.selected}
+
+    const res = await fetch(`http://localhost:5000/products/${id}`,{
+      method: 'PUT', 
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(updateProduct)
+    })
+
+    const data = await res.json()
+
+    setProducts(
+      products.map((product) => 
+        product.id === id ? 
+        { ...product, 
+          selected: data.selected } : product))
+        }
+
+  // Add Product
+  const addProduct = async (product) => {
+    const res = await fetch('http://localhost:5000/products', {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(product)
+    })
+
+    const data = await res.json()
+
+    setProducts([...products, data])
+
+
+    // const id = Math.floor(Math.random() * 1000) + 1
+    // const newProduct = { id, ...product }
+    // setProducts([...products, newProduct])
+  } 
 
   return (
     <div className="container">
-      <Header title={'Quotation builder'}/>
-      <Products products={products}/>
+      <Header 
+        title={'Quotation builder'} 
+        onAdd={() => setShowAddProduct(!showAddProduct)} showAdd={showAddProduct}/>
+      {showAddProduct && <AddProduct onAdd={addProduct}/>}
+      {products.length > 0 ? <Products products={products} onDelete={deleteProduct} onToggle={toggleSelected}/> : 'No products to show'}
+      <Footer/>
     </div>
   );
 }
