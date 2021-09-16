@@ -1,0 +1,45 @@
+const mongoose = require('mongoose')
+const Product = require('./models/product')
+
+mongoose.connect('mongodb://localhost:27017/react_task_tracker', { useNewUrlParser: true, useUnifiedTopology:true})
+.then(() => {
+    console.log('Mongo connection open.')
+})
+.catch((err) => {
+    console.log('Mongo connection error')
+    console.log(err);
+})
+
+const seedProducts =  [
+      {
+        "id": 1,
+        "text": "Static site",
+        "price": 500,
+        "description": "A static web page is a web page that is delivered to the user's web browser exactly as stored. Consequently, a static web page displays the same information for all users, from all contexts.",
+        "source": "https://en.wikipedia.org/wiki/Static_web_page",
+        "selected": false
+      },
+      {
+        "id": 2,
+        "text": "UI Design",
+        "price": 500,
+        "description": "UI or User Interface Design is to design user interfaces with a focus on maximizing usability and the user experience. The goal being making the user's interaction as simple and efficient as possible, or what is known as user-centered design.",
+        "source": "https://en.wikipedia.org/wiki/User_interface_design",
+        "selected": false
+      },
+      {
+        "id": 3,
+        "text": "Dynamic website",
+        "price": "1500",
+        "description": "Dynamic website",
+        "selected": false
+      }
+    ]
+
+Product.insertMany(seedProducts)
+.then(res => {
+    console.log(res)
+})
+.catch(e => {
+    console.log(e)
+})

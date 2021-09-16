@@ -14,14 +14,14 @@
       "price": 500,
       "description": "UI or User Interface Design is to design user interfaces with a focus on maximizing usability and the user experience. The goal being making the user's interaction as simple and efficient as possible, or what is known as user-centered design.",
       "source": "https://en.wikipedia.org/wiki/User_interface_design",
-      "selected": true
+      "selected": false
     },
     {
+      "id": 3,
       "text": "Dynamic website",
       "price": "1500",
       "description": "Dynamic website",
-      "selected": false,
-      "id": 3
+      "selected": false
     }
   ]
 }
